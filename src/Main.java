@@ -13,6 +13,7 @@ public class Main {
 
         /** ------ konfigurálás eleje ------ **/
         WebDriver driver = new FirefoxDriver();
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(30000)); // megadott sec-ig várakozik az oldal betöltésére
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(30000)); // megadott sec-ig várakozik, hogy a megadott elemeknek legyen elég ideje megjelenni
         driver.manage().window().maximize(); // teljes képernyőre nagyítás
         driver.get("https://www.saucedemo.com/");  // weboldal megnyitása
