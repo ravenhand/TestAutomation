@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-public class Main {
+public class MainV1 {
     public static void main(String[] args) throws InterruptedException{
 
         /** ------ konfigurálás eleje ------ **/
