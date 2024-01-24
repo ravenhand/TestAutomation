@@ -21,7 +21,7 @@ public class MainV2 {
         //loginByTagNameTest();
         loginByCSSSelectorTest();
         webDriverTearDown();
-        System.out.println("Hello world!");
+        System.out.println("Test execution ended");
     }
 
     public static void webDriverTearDown() throws InterruptedException {
