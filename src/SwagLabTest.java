@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.List;
@@ -15,23 +16,24 @@ public class SwagLabTest {
 
     public static void main(String[] args) throws InterruptedException {
         webDriverSetup();
-        //loginWithValidDataTest();
-        //loginWithInValidDataTest();
-        loginWithEmptyDataTest();
-        //loginWithEmptyPasswordDataTest();
-        //loginWithEmptyUserNameDataTest();
-        //loginWithInValidUserNameValidPasswordDataTest();
-        //loginWithValidUserNameInValidPasswordDataTest();
-        //loginWith_problem_user_ValidUserNameDataTest();
-        //loginWith_Locked_out_ValidUserNameDataTest();
-        //loginWith_performance_glitch_user_ValidUserNameDataTest();
-        //loginWith_error_user_ValidUserNameDataTest();
-        //loginWith_visual_user_ValidUserNameDataTest();
+        loginWithValidDataTest();
+
+//        loginWithInValidDataTest();
+//        loginWithEmptyDataTest();
+//        loginWithEmptyPasswordDataTest();
+//        loginWithEmptyUserNameDataTest();
+//        loginWithInValidUserNameValidPasswordDataTest();
+//        loginWithValidUserNameInValidPasswordDataTest();
+//        loginWith_problem_user_ValidUserNameDataTest();
+//        loginWith_Locked_out_ValidUserNameDataTest();
+//        loginWith_performance_glitch_user_ValidUserNameDataTest();
+//        loginWith_error_user_ValidUserNameDataTest();
+//        loginWith_visual_user_ValidUserNameDataTest();
 
         webDriverTearDown();
         System.out.println("Test execution ended");
     }
-
+    @Test
     public static void loginWithValidDataTest() throws InterruptedException {
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user-name")));
