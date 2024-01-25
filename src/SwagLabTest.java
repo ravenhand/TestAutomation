@@ -5,36 +5,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 import java.util.List;
 
 public class SwagLabTest {
-    static WebDriver driver;
-    static WebDriverWait wait;
+    WebDriver driver;
+    WebDriverWait wait;
 
-    public static void main(String[] args) throws InterruptedException {
-        webDriverSetup();
-        loginWithValidDataTest();
-
-//        loginWithInValidDataTest();
-//        loginWithEmptyDataTest();
-//        loginWithEmptyPasswordDataTest();
-//        loginWithEmptyUserNameDataTest();
-//        loginWithInValidUserNameValidPasswordDataTest();
-//        loginWithValidUserNameInValidPasswordDataTest();
-//        loginWith_problem_user_ValidUserNameDataTest();
-//        loginWith_Locked_out_ValidUserNameDataTest();
-//        loginWith_performance_glitch_user_ValidUserNameDataTest();
-//        loginWith_error_user_ValidUserNameDataTest();
-//        loginWith_visual_user_ValidUserNameDataTest();
-
-        webDriverTearDown();
-        System.out.println("Test execution ended");
-    }
     @Test
-    public static void loginWithValidDataTest() throws InterruptedException {
+    public void loginWithValidDataTest() {
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -47,28 +31,39 @@ public class SwagLabTest {
             wait.until(ExpectedConditions.elementToBeClickable(By.id("login-button")));
             WebElement loginButton = driver.findElement(By.id("login-button"));
             loginButton.click();
+
+            WebElement productsTitle = driver.findElement(By.className("title"));
+            Assert.assertNotNull(productsTitle);
         }catch (NoSuchElementException ex){
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-    public static void loginWithInValidDataTest(){
+    @Test
+    public void loginWithInValidDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
-            userInput.sendKeys("kiskutya");
+            userInput.sendKeys("littleDog");
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
             WebElement userPassword = driver.findElement(By.id("password"));
-            userPassword.sendKeys("kismacska");
+            userPassword.sendKeys("littleCat");
 
             wait.until(ExpectedConditions.elementToBeClickable(By.id("login-button")));
             WebElement loginButton = driver.findElement(By.id("login-button"));
             loginButton.click();
+            WebElement errorMessageContainer = driver.findElement(By.className("error-message-container"));
+            String errorMessage = errorMessageContainer.getText();
+            Assert.assertEquals(errorMessage,
+                    "Epic sadface: Username and password do not match any user in this service",
+                    "A hibaüzenet nem felel meg a követelményeknek"); // ez csak akkor jelenik meg ha eltört a teszt.
+
         }catch (NoSuchElementException ex){
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-    public static void loginWithEmptyDataTest(){
+    @Test
+    public void loginWithEmptyDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -85,8 +80,8 @@ public class SwagLabTest {
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-
-    public static void loginWithEmptyUserNameDataTest(){
+    @Test
+    public void loginWithEmptyUserNameDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -99,11 +94,17 @@ public class SwagLabTest {
             wait.until(ExpectedConditions.elementToBeClickable(By.id("login-button")));
             WebElement loginButton = driver.findElement(By.id("login-button"));
             loginButton.click();
+
+            WebElement errorMessageContainer = driver.findElement(By.className("error-message-container"));
+            String errorMessage = errorMessageContainer.getText();
+            Assert.assertEquals(errorMessage, "Epic sadface: Username is required");
+
         }catch (NoSuchElementException ex){
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-    public static void loginWithEmptyPasswordDataTest(){
+    @Test
+    public void loginWithEmptyPasswordDataTest(){
         try {
             List<WebElement> inputElements = driver.findElements(By.tagName("input"));
             WebElement userNameInput = inputElements.get(0);
@@ -119,12 +120,12 @@ public class SwagLabTest {
             System.err.println("Cannot find username/password input field or login button");
         }
     }
-
-    public static void loginWithInValidUserNameValidPasswordDataTest(){
+    @Test
+    public void loginWithInValidUserNameValidPasswordDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
-            userInput.sendKeys("Kiskutya");
+            userInput.sendKeys("littleDog");
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));
             WebElement userPassword = driver.findElement(By.id("password"));
@@ -137,7 +138,8 @@ public class SwagLabTest {
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-    public static void loginWithValidUserNameInValidPasswordDataTest(){
+    @Test
+    public void loginWithValidUserNameInValidPasswordDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -145,7 +147,7 @@ public class SwagLabTest {
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("password")));
             WebElement userPassword = driver.findElement(By.id("password"));
-            userPassword.sendKeys("kismacska");
+            userPassword.sendKeys("littleCat");
 
             wait.until(ExpectedConditions.elementToBeClickable(By.id("login-button")));
             WebElement loginButton = driver.findElement(By.id("login-button"));
@@ -154,8 +156,8 @@ public class SwagLabTest {
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-
-    public static void loginWith_problem_user_ValidUserNameDataTest(){
+    @Test
+    public void loginWith_problem_user_ValidUserNameDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -172,8 +174,8 @@ public class SwagLabTest {
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-
-    public static void loginWith_performance_glitch_user_ValidUserNameDataTest(){
+    @Test
+    public void loginWith_performance_glitch_user_ValidUserNameDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -190,8 +192,8 @@ public class SwagLabTest {
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-
-    public static void loginWith_Locked_out_ValidUserNameDataTest(){
+    @Test
+    public void loginWith_Locked_out_ValidUserNameDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -208,8 +210,8 @@ public class SwagLabTest {
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-
-    public static void loginWith_error_user_ValidUserNameDataTest(){
+    @Test
+    public void loginWith_error_user_ValidUserNameDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -226,8 +228,8 @@ public class SwagLabTest {
             System.err.println("No Such element" + ex.getMessage());
         }
     }
-
-    public static void loginWith_visual_user_ValidUserNameDataTest(){
+    @Test
+    public void loginWith_visual_user_ValidUserNameDataTest(){
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -245,12 +247,14 @@ public class SwagLabTest {
         }
     }
 
-    public static void webDriverTearDown() throws InterruptedException {
+    @AfterSuite
+    public void webDriverTearDown() throws InterruptedException {
         Thread.sleep(3000);
         driver.quit();
     }
-    public static void webDriverSetup() {
-        /** ------ konfigurálás eleje ------ **/
+    @BeforeSuite
+    public void webDriverSetup() {
+        /* ------ configuration starts ------ */
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(30000)); // megadott sec-ig várakozik az oldal betöltésére
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(30000)); // megadott sec-ig várakozik, hogy a megadott elemeknek legyen elég ideje megjelenni
@@ -259,6 +263,6 @@ public class SwagLabTest {
 
         // Explicit wait beállítás
         wait = new WebDriverWait(driver, Duration.ofMillis(30000)); // változót hoz létre a várakozáshoz
-        /** ------ konfigurálás vége ------ **/
+        /* ------ configuration ends ------ */
     }
 }
