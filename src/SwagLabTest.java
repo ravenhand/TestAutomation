@@ -19,6 +19,7 @@ public class SwagLabTest {
 
     @Test
     public void loginWithValidDataTest() {
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -40,6 +41,7 @@ public class SwagLabTest {
     }
     @Test
     public void loginWithInValidDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -64,6 +66,7 @@ public class SwagLabTest {
     }
     @Test
     public void loginWithEmptyDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -76,12 +79,17 @@ public class SwagLabTest {
             wait.until(ExpectedConditions.elementToBeClickable(By.id("login-button")));
             WebElement loginButton = driver.findElement(By.id("login-button"));
             loginButton.click();
+            WebElement errorMessageContainer = driver.findElement(By.className("error-message-container"));
+            String errorMessage = errorMessageContainer.getText();
+            Assert.assertEquals(errorMessage, "Epic sadface: Username is required");
+
         }catch (NoSuchElementException ex){
             System.err.println("No Such element" + ex.getMessage());
         }
     }
     @Test
     public void loginWithEmptyUserNameDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -105,6 +113,7 @@ public class SwagLabTest {
     }
     @Test
     public void loginWithEmptyPasswordDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             List<WebElement> inputElements = driver.findElements(By.tagName("input"));
             WebElement userNameInput = inputElements.get(0);
@@ -115,6 +124,10 @@ public class SwagLabTest {
 
             WebElement loginButton = inputElements.get(2);
             loginButton.click();
+
+            WebElement errorMessageContainer = driver.findElement(By.className("error-message-container"));
+            String errorMessage = errorMessageContainer.getText();
+            Assert.assertEquals(errorMessage, "Epic sadface: Password is required");
         } catch (NoSuchElementException ex) {
             System.err.println(ex.getMessage());
             System.err.println("Cannot find username/password input field or login button");
@@ -122,6 +135,7 @@ public class SwagLabTest {
     }
     @Test
     public void loginWithInValidUserNameValidPasswordDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -134,12 +148,19 @@ public class SwagLabTest {
             wait.until(ExpectedConditions.elementToBeClickable(By.id("login-button")));
             WebElement loginButton = driver.findElement(By.id("login-button"));
             loginButton.click();
+
+            WebElement errorMessageContainer = driver.findElement(By.className("error-message-container"));
+            String errorMessage = errorMessageContainer.getText();
+            Assert.assertEquals(errorMessage,
+                    "Epic sadface: Username and password do not match any user in this service",
+                    "A hibaüzenet nem felel meg a követelményeknek"); // ez csak akkor jelenik meg ha eltört a teszt.
         }catch (NoSuchElementException ex){
             System.err.println("No Such element" + ex.getMessage());
         }
     }
     @Test
     public void loginWithValidUserNameInValidPasswordDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -152,16 +173,23 @@ public class SwagLabTest {
             wait.until(ExpectedConditions.elementToBeClickable(By.id("login-button")));
             WebElement loginButton = driver.findElement(By.id("login-button"));
             loginButton.click();
+
+            WebElement errorMessageContainer = driver.findElement(By.className("error-message-container"));
+            String errorMessage = errorMessageContainer.getText();
+            Assert.assertEquals(errorMessage,
+                    "Epic sadface: Username and password do not match any user in this service",
+                    "A hibaüzenet nem felel meg a követelményeknek"); // ez csak akkor jelenik meg ha eltört a teszt.
         }catch (NoSuchElementException ex){
             System.err.println("No Such element" + ex.getMessage());
         }
     }
     @Test
     public void loginWith_problem_user_ValidUserNameDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
-            userInput.sendKeys("locked_out_user");
+            userInput.sendKeys("problem_user");
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
             WebElement userPassword = driver.findElement(By.id("password"));
@@ -176,6 +204,7 @@ public class SwagLabTest {
     }
     @Test
     public void loginWith_performance_glitch_user_ValidUserNameDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -194,10 +223,11 @@ public class SwagLabTest {
     }
     @Test
     public void loginWith_Locked_out_ValidUserNameDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
-            userInput.sendKeys("problem_user");
+            userInput.sendKeys("locked_out_user");
 
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
             WebElement userPassword = driver.findElement(By.id("password"));
@@ -212,6 +242,7 @@ public class SwagLabTest {
     }
     @Test
     public void loginWith_error_user_ValidUserNameDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -230,6 +261,7 @@ public class SwagLabTest {
     }
     @Test
     public void loginWith_visual_user_ValidUserNameDataTest(){
+        driver.get("https://www.saucedemo.com");
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("user-name")));
             WebElement userInput = driver.findElement(By.id("user-name"));
@@ -258,7 +290,7 @@ public class SwagLabTest {
         driver = new FirefoxDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(30000)); // megadott sec-ig várakozik az oldal betöltésére
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(30000)); // megadott sec-ig várakozik, hogy a megadott elemeknek legyen elég ideje megjelenni
-        driver.manage().window().maximize(); // teljes képernyőre nagyítás
+        //driver.manage().window().maximize(); // teljes képernyőre nagyítás
         driver.get("https://www.saucedemo.com/");  // weboldal megnyitása
 
         // Explicit wait beállítás
