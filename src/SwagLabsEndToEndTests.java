@@ -52,19 +52,22 @@ public class SwagLabsEndToEndTests extends SwagLabTest{
         WebElement backHomeButton = driver.findElement(By.id("back-to-products"));
         backHomeButton.click();
 
-        try{
-            WebElement cartBadge = driver.findElement(By.className("shopping_cart_badge"));
-            Assert.assertFalse(cartBadge.isDisplayed());
-        }catch (NoSuchElementException ex){
-            System.err.println("No such element: " + ex.getMessage());
-        }
-
         // Elvárt működés
 
         //- A felület címe "Product" legyen
         WebElement productsTitle = driver.findElement(By.className("title"));
         Assert.assertTrue(productsTitle.isDisplayed());
         //- A cart badge nem jelenik meg a kosár ikonon
-
+        // 1. megoldás
+//        try{
+//            WebElement cartBadge = driver.findElement(By.className("shopping_cart_badge"));
+//            Assert.assertFalse(cartBadge.isDisplayed());
+//        }catch (NoSuchElementException ex){
+//            System.err.println("No such element: " + ex.getMessage());
+//            Assert.assertTrue(true);
+//        }
+        // 2. megoldás
+        boolean shoppingCartBadge = driver.getPageSource().contains("shopping_cart-badge"); // logikai érték: megvizsgálja hogy egy elem megtalálható e az egész oldalon
+        Assert.assertFalse(shoppingCartBadge);
     }
 }
