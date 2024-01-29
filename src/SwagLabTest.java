@@ -14,8 +14,8 @@ import java.time.Duration;
 import java.util.List;
 
 public class SwagLabTest {
-    WebDriver driver;
-    WebDriverWait wait;
+    protected WebDriver driver;
+    protected WebDriverWait wait;
 
     @Test
     public void loginWithValidDataTest() {
@@ -288,13 +288,13 @@ public class SwagLabTest {
     public void webDriverSetup() {
         /* ------ configuration starts ------ */
         driver = new FirefoxDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(30000)); // megadott sec-ig várakozik az oldal betöltésére
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(30000)); // megadott sec-ig várakozik, hogy a megadott elemeknek legyen elég ideje megjelenni
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(10000)); // megadott sec-ig várakozik az oldal betöltésére
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(10000)); // megadott sec-ig várakozik, hogy a megadott elemeknek legyen elég ideje megjelenni
         //driver.manage().window().maximize(); // teljes képernyőre nagyítás
         driver.get("https://www.saucedemo.com/");  // weboldal megnyitása
 
         // Explicit wait beállítás
-        wait = new WebDriverWait(driver, Duration.ofMillis(30000)); // változót hoz létre a várakozáshoz
+        wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // változót hoz létre a várakozáshoz
         /* ------ configuration ends ------ */
     }
 }
