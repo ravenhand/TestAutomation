@@ -133,7 +133,7 @@ public class SwagLabsEndToEndTests extends SwagLabTest{
         String completeText = completeHeaderText.getText();
         Assert.assertEquals(completeText,"Thank you for your order!");
 //        15. Rákattintunk a menü "logout" gombra
-        WebElement menuButton = driver.findElement(By.id("react-burger-menu-btn"));
+        WebElement menuButton = driver.findElement(By.xpath("//*[@id=\"react-burger-menu-btn\"]"));
         menuButton.click();
         WebElement logoutButton = driver.findElement(By.xpath("//*[@id=\"logout_sidebar_link\"]"));
         logoutButton.click();
