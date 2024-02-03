@@ -2,6 +2,7 @@ import jdk.jfr.Description;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -11,7 +12,7 @@ import java.util.Random;
 
 public class SwagLabsEndToEndTests extends SwagLabTest{
 
-    @Test
+    @Test (priority = 1)
     @Description("Standard user log in and buy a product.")
     public void standardUserHappyPath(){
         // Előfeltétel
@@ -74,7 +75,7 @@ public class SwagLabsEndToEndTests extends SwagLabTest{
         boolean shoppingCartBadge = driver.getPageSource().contains("shopping_cart-badge"); // logikai érték: megvizsgálja hogy egy elem megtalálható e az egész oldalon
         Assert.assertFalse(shoppingCartBadge);
     }
-    @Test
+    @Test (priority = 2)
     @Description("Standard user log in and buy multiple products with cart modification")
     public void standardUserMultipleProductPath(){
         // Előfeltétel
@@ -140,7 +141,74 @@ public class SwagLabsEndToEndTests extends SwagLabTest{
 
 //        Elvárt működés
 //        Bejelentkezési képernyőre való navigálás sikeres
-        WebElement loginCredentials = driver.findElement(By.className("login_credentials"));
-        Assert.assertTrue(loginCredentials.getText().contains("visual_user"));
+//        1. megoldás
+//        Újra meg kell hívni a findElement függvényt, mert már nem aktuális a referencia az elemre
+
+        loginButton = driver.findElement(By.name("login-button"));
+        Assert.assertTrue(loginButton.isDisplayed());
+
+//        WebElement loginCredentials = driver.findElement(By.className("login_credentials"));
+//        Assert.assertTrue(loginCredentials.getText().contains("visual_user"));
+
+//        2. megoldás (aktuális URL-t vizsgáljuk)
+
+        Assert.assertEquals(driver.getCurrentUrl(),"https://www.saucedemo.com/");
+    }
+    @Test (priority = -1)
+    public void checkUserInput(){
+//         Tesztlépések
+//
+//         1. bejelentkezési képernyőn vagyok
+        driver.get("https://www.saucedemo.com"); // weboldal betöltése
+//         2. bejelentkezek mint standard_user
+        loginWithUserAndPassword("standard_user", "secret_sauce");
+//         3. Bike Light terméket rakok a kosárba
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/inventory.html");
+        WebElement bikeLightAdd = driver.findElement(By.id("add-to-cart-sauce-labs-bike-light"));
+        bikeLightAdd.click();
+//         4. Megtekintem a kosaram
+        WebElement cartLink = driver.findElement(By.xpath("//a[@class='shopping_cart_link']"));
+        cartLink.click();
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/cart.html");
+//         5. Tovább megyek a vásárláshoz
+        WebElement checkoutButton = driver.findElement(By.id("checkout"));
+        checkoutButton.click();
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.saucedemo.com/checkout-step-one.html");
+//         6. Megadom a adataimat
+        WebElement firstName = driver.findElement(By.id("first-name"));
+        firstName.sendKeys("Para");
+
+        WebElement lastName = driver.findElement(By.id("last-name"));
+        lastName.sendKeys("Zita");
+
+        WebElement zipCode = driver.findElement(By.id("postal-code"));
+        zipCode.sendKeys("1201");
+
+        Assert.assertEquals(lastName.getAttribute("value"), "Zita");
+//         7. Ellenörzöm, hogy az adataimat fogadta a rendszer
+    }
+    @Test
+    public void testOrder (){
+        driver.get("https://www.saucedemo.com"); // weboldal betöltése
+
+        loginWithUserAndPassword("standard_user", "secret_sauce");
+
+        WebElement selectWebElement = driver.findElement(By.className("product_sort_container"));
+
+        Select select = new Select(selectWebElement);
+
+        //select.selectByIndex(1);
+        //select.selectByValue("za");
+        select.selectByVisibleText("Price (low to high)");
+
+        List<WebElement> items = driver.findElements(By.className("inventory_item"));
+//         1. megoldás
+        String lowestPrice = items.get(0).findElement(By.className("inventory_item_price")).getText();
+        String highestPrice = items.get(5).findElement(By.className("inventory_item_price")).getText();
+
+        double lowestPriceDouble = Double.parseDouble(lowestPrice.substring(1));
+        double highestPriceDouble = Double.parseDouble(highestPrice.substring(1));
+
+        Assert.assertTrue(highestPriceDouble > lowestPriceDouble);
     }
 }
